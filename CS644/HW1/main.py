@@ -166,24 +166,35 @@ def show_results(ft, p, l):
     for k in results:
         print(k, restaurants[k])
     
+    print("\n")
+    print("\n")
+    print("\n")
     temp = results
+    
     if p is not 'any':
+        print(temp)
         for k in temp:
+            print("jhfbbdfdfdbfd")#, restaurants[k]['price'], p)
             if restaurants[k]['price'] != p:
-                print(restaurants[k]['price'], p)
                 print('price not matching')
                 print('res:', results)
                 results.remove(k)
                 print('res after removal:', results)
+            else:
+                print("price match")
     print(results)        
-    
+    print("\n")
+    print("\n")
+    print("\n")
     temp = results
     if l is not 'any':
         for k in temp:
             if restaurants[k]['location'] != l:
                 results.remove(k)
     print(results)
-    
+    print("\n")
+    print("\n")
+    print("\n")
     print("Restaurants found based on your preferences of {} foodtype {} priced restaurant in {} location are as follows: ".format(ft, p, l))
     for k in results:
         print(k, restaurants[k]["mobile"], restaurants[k])

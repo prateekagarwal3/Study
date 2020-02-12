@@ -3,22 +3,28 @@ f = open('restaurantDatabase.txt')
 
 for res in f.readlines():
     res = res.split('\t')
-    restaurants[res[0].lower()] = {"mobile":res[1].lower(), "foodtype":res[2].lower(), "price":res[3].lower(), "location":res[4].split('\n')[0].lower()}
+    restaurants[res[0].lower().strip()] = {"mobile":res[1].lower().strip(), "foodtype":res[2].lower().strip(), "price":res[3].lower().strip(), "location":res[4].split('\n')[0].lower().strip()}
 
 print(restaurants)
-foodTypes = ["chinese", "japanese", "mexican", "italian", "greek"]
-prices = ["cheap", "medium-priced", "expensive"]
-locations = ["marina del ray", "korea town", "venice", "playa vista", "santa monica", "hollywood"]
+
+foodTypes = set()
+prices = set()
+locations = set()
+
+for k in restaurants.keys():
+    foodTypes.add(restaurants[k]["foodtype"])
+    prices.add(restaurants[k]["price"])
+    locations.add(restaurants[k]["location"])
 
 def process_confirmation_ip(ip):
-    ip = ip.lower()
+    ip = ip.lower().strip()
     if ip.find("yes") != -1:
         return 1
     else:
         return 0
     
 def process_ft_input(ip, ft, p, l):
-    ip = ip.lower()
+    ip = ip.lower().strip()
 
     for i in foodTypes:
         if ip.find(i) != -1:
@@ -40,7 +46,7 @@ def process_ft_input(ip, ft, p, l):
     return ft, p, l
 
 def process_p_input(ip, ft, p, l):
-    ip = ip.lower()
+    ip = ip.lower().strip()
 
     for i in foodTypes:
         if ip.find(i) != -1:
@@ -64,7 +70,7 @@ def process_p_input(ip, ft, p, l):
     return ft, p, l
 
 def process_l_input(ip, ft, p, l):
-    ip = ip.lower()
+    ip = ip.lower().strip()
 
     for i in foodTypes:
         if ip.find(i) != -1:
@@ -150,29 +156,37 @@ def get_location(ft, p, l):
 def show_results(ft, p, l):
     results = []
     if ft is not 'any':
-        # print("ft is not any", ft)
         for k in restaurants.keys():
-            # print(restaurants[k]["foodtype"])
             if restaurants[k]["foodtype"] == ft:
-                # print("ft is matching")
                 results.append(k)
     else:
         for k in restaurants.keys():
             results.append(k)
-            
+    
+    for k in results:
+        print(k, restaurants[k])
+    
+    temp = results
     if p is not 'any':
-        for k in results:
+        for k in temp:
             if restaurants[k]['price'] != p:
+                print(restaurants[k]['price'], p)
+                print('price not matching')
+                print('res:', results)
                 results.remove(k)
-                          
+                print('res after removal:', results)
+    print(results)        
+    
+    temp = results
     if l is not 'any':
-        for k in results:
+        for k in temp:
             if restaurants[k]['location'] != l:
                 results.remove(k)
-                
+    print(results)
+    
     print("Restaurants found based on your preferences of {} foodtype {} priced restaurant in {} location are as follows: ".format(ft, p, l))
     for k in results:
-        print(k, restaurants[k]["mobile"])
+        print(k, restaurants[k]["mobile"], restaurants[k])
 
 def fill_slots():
     ft = None
@@ -187,4 +201,3 @@ ft, ft_confirm, p, p_confirm, l, l_confirm = fill_slots()
 print(ft, ft_confirm, p, p_confirm, l, l_confirm)
 
 show_results(ft, p, l)
-

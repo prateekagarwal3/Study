@@ -3,7 +3,7 @@ f = open('restaurantDatabase.txt')
 
 for res in f.readlines():
     res = res.split('\t')
-    restaurants[res[0].lower()] = {"number":res[1].lower(), "foodtype":res[2].lower(), "price":res[3].lower(), "location":res[4].split('\n')[0].lower()}
+    restaurants[res[0].lower()] = {"mobile":res[1].lower(), "foodtype":res[2].lower(), "price":res[3].lower(), "location":res[4].split('\n')[0].lower()}
 
 print(restaurants)
 foodTypes = ["chinese", "japanese", "mexican", "italian", "greek"]
@@ -149,7 +149,6 @@ def get_location(ft, p, l):
 
 def show_results(ft, p, l):
     results = []
-    print(results)
     if ft is not 'any':
         # print("ft is not any", ft)
         for k in restaurants.keys():
@@ -160,20 +159,20 @@ def show_results(ft, p, l):
     else:
         for k in restaurants.keys():
             results.append(k)
-    print(results)
+            
     if p is not 'any':
         for k in results:
             if restaurants[k]['price'] != p:
                 results.remove(k)
-    print(results)           
+                          
     if l is not 'any':
         for k in results:
             if restaurants[k]['location'] != l:
                 results.remove(k)
                 
-    print(results)
+    print("Restaurants found based on your preferences of {} foodtype {} priced restaurant in {} location are as follows: ".format(ft, p, l))
     for k in results:
-        print(k, restaurants[k])
+        print(k, restaurants[k]["mobile"])
 
 def fill_slots():
     ft = None

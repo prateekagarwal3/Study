@@ -1,6 +1,6 @@
 restaurants = {}
 f = open('restaurantDatabase.txt')
-
+# print("workinggggggg")
 for res in f.readlines()[1:]:
     res = res.split('\t')
     restaurants[res[0].lower().strip()] = {"mobile":res[1].lower().strip(), "foodtype":res[2].lower().strip(), "price":res[3].lower().strip(), "location":res[4].split('\n')[0].lower().strip()}
@@ -22,8 +22,10 @@ def process_confirmation_ip(ip):
     ip = ip.lower().strip()
     if ip.find("yes") != -1:
         return 1
-    else:
+    elif ip.find("no") != -1:
         return 0
+    else:
+        return 2
     
 def process_ft_input(ip, ft, p, l):
     ip = ip.lower().strip()
@@ -99,19 +101,19 @@ def get_foodtype(ft, p, l):
     while(1):
         if ft is None:
             print("What type of restaurant do you want?")
-            ip = raw_input()
+            ip = input()
             ft, p, l = process_ft_input(ip, ft, p, l)
 
         if ft is None:
             continue
         else:
             print("You said you want {} foodtype restaurant?".format(ft))
-            ip = raw_input()
+            ip = input()
             ft_confirm = process_confirmation_ip(ip)
             if ft_confirm == 0:
                 ft, p, l = process_ft_input(ip, None, p, l)
         
-        if ft_confirm == 0:
+        if ft_confirm == 0 or ft_confirm == 2:
             # ft = None
             continue
         else:
@@ -121,18 +123,18 @@ def get_price(ft, p, l):
     while(1):
         if p is None:
             print("How expensive a restaurant do you want?")
-            ip = raw_input()
+            ip = input()
             ft, p, l = process_p_input(ip, ft, p, l)
 
         if p is None:
             continue
         else:
             print("You said you want {} priced restaurant?".format(p))
-            ip = raw_input()
+            ip = input()
             p_confirm = process_confirmation_ip(ip)
             if p_confirm == 0:
                 ft, p, l = process_ft_input(ip, ft, None, l)            
-        if p_confirm is 0:
+        if p_confirm == 0 or p_confirm == 2:
             # p = None
             continue
         else:   
@@ -142,16 +144,16 @@ def get_location(ft, p, l):
     while(1):
         if l is None:
             print("Ok where do you want the restaurant to be located?")
-            ip = raw_input()
+            ip = input()
             ft, p, l = process_l_input(ip, ft, p, l)
 
         if l is None:
             continue
         else:
             print("You said you want restaurant in {} location?".format(l))
-            ip = raw_input()
+            ip = input()
             l_confirm = process_confirmation_ip(ip)
-            if l_confirm is 0:
+            if l_confirm == 0 or l_confirm == 2:
                 ft, p, l = process_ft_input(ip, ft, p, None)
         
         if l_confirm is 0:
@@ -170,41 +172,41 @@ def show_results(ft, p, l):
         for k in restaurants.keys():
             results.append(k)
     
-    for k in results:
-        print(k, restaurants[k])
+    # for k in results:
+    #     print(k, restaurants[k])
     
-    print("\n")
-    print("\n")
-    print("\n")
-    temp = results
+    # print("\n")
+    # print("\n")
+    # print("\n")
+    temp = results[:]
     
     if p is not 'any':
-        print(temp)
+        # print(temp)
         for k in temp:
-            print("jhfbbdfdfdbfd")#, restaurants[k]['price'], p)
+            # print("jhfbbdfdfdbfd")#, restaurants[k]['price'], p)
             if restaurants[k]['price'] != p:
-                print('price not matching')
-                print('res:', results)
+                # print('price not matching')
+                # print('res:', results)
                 results.remove(k)
-                print('res after removal:', results)
-            else:
-                print("price match")
-    print(results)        
-    print("\n")
-    print("\n")
-    print("\n")
-    temp = results
+            #     print('res after removal:', results)
+            # else:
+                # print("price match")
+    # print(results)        
+    # print("\n")
+    # print("\n")
+    # print("\n")
+    temp = results[:]
     if l is not 'any':
         for k in temp:
             if restaurants[k]['location'] != l:
                 results.remove(k)
-    print(results)
-    print("\n")
-    print("\n")
-    print("\n")
+    # print(results)
+    # print("\n")
+    # print("\n")
+    # print("\n")
     print("Restaurants found based on your preferences of {} foodtype {} priced restaurant in {} location are as follows: ".format(ft, p, l))
     for k in results:
-        print(k, restaurants[k]["mobile"], restaurants[k])
+        print(k, restaurants[k]["mobile"])
 
 def fill_slots():
     ft = None
@@ -216,6 +218,6 @@ def fill_slots():
     return ft, ft_confirm, p, p_confirm, l, l_confirm
 
 ft, ft_confirm, p, p_confirm, l, l_confirm = fill_slots()
-print(ft, ft_confirm, p, p_confirm, l, l_confirm)
+# print(ft, ft_confirm, p, p_confirm, l, l_confirm)
 
 show_results(ft, p, l)

@@ -1,7 +1,7 @@
 restaurants = {}
 f = open('restaurantDatabase.txt')
 
-for res in f.readlines():
+for res in f.readlines()[1:]:
     res = res.split('\t')
     restaurants[res[0].lower().strip()] = {"mobile":res[1].lower().strip(), "foodtype":res[2].lower().strip(), "price":res[3].lower().strip(), "location":res[4].split('\n')[0].lower().strip()}
 
@@ -14,7 +14,9 @@ locations = set()
 for k in restaurants.keys():
     foodTypes.add(restaurants[k]["foodtype"])
     prices.add(restaurants[k]["price"])
+    # print(k, restaurants[k]["price"])
     locations.add(restaurants[k]["location"])
+# print(prices)
 
 def process_confirmation_ip(ip):
     ip = ip.lower().strip()
@@ -106,9 +108,11 @@ def get_foodtype(ft, p, l):
             print("You said you want {} foodtype restaurant?".format(ft))
             ip = raw_input()
             ft_confirm = process_confirmation_ip(ip)
+            if ft_confirm == 0:
+                ft, p, l = process_ft_input(ip, None, p, l)
         
         if ft_confirm == 0:
-            ft = None
+            # ft = None
             continue
         else:
             return ft, ft_confirm, p, l
@@ -126,9 +130,10 @@ def get_price(ft, p, l):
             print("You said you want {} priced restaurant?".format(p))
             ip = raw_input()
             p_confirm = process_confirmation_ip(ip)
-        
+            if p_confirm == 0:
+                ft, p, l = process_ft_input(ip, ft, None, l)            
         if p_confirm is 0:
-            p = None
+            # p = None
             continue
         else:   
             return ft, p_confirm, p, l
@@ -146,9 +151,11 @@ def get_location(ft, p, l):
             print("You said you want restaurant in {} location?".format(l))
             ip = raw_input()
             l_confirm = process_confirmation_ip(ip)
+            if l_confirm is 0:
+                ft, p, l = process_ft_input(ip, ft, p, None)
         
         if l_confirm is 0:
-            l = None
+            # l = None
             continue
         else:   
             return ft, l_confirm, p, l
